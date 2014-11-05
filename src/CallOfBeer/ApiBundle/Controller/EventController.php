@@ -13,6 +13,8 @@ class EventController extends Controller
 {
     public function getEventsAction()
     {
+        $events = array();
+
         $event = new CobEvent();
         $adress = new Adress();
         $location = new Geolocation();
@@ -30,8 +32,26 @@ class EventController extends Controller
         $event->setAdress($adress);
         $event->setLocation($location);
 
-        // var_dump($event);die();
+        $event2 = new CobEvent();
+        $adress2 = new Adress();
+        $location2 = new Geolocation();
 
-        return $event;
+        $location2->setLong(44.92);
+        $location2->setLat(-0.75);
+
+        $adress2->setName("Martin's House");
+        $adress2->setAdress("1 chemin de Pauge");
+        $adress2->setZip(33140);
+        $adress2->setCity("Villenave d'Ornon");
+        $adress2->setCountry("France");
+
+        $event2->setName("Great Party at Martin's House");
+        $event2->setAdress($adress2);
+        $event2->setLocation($location2);
+
+        array_push($events, $event);
+        array_push($events, $event2);
+
+        return $events;
     }
 }
