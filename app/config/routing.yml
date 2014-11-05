@@ -4,7 +4,7 @@ call_of_beer_api:
 
 #API Rest Rooting
 rest : 
-	type : rest
-	resource : "routing_rest.yml"
-	prefix : /api
+    type : rest
+    resource : "routing_rest.yml"
+    prefix : /api
 

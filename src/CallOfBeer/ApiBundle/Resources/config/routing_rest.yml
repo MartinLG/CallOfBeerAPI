@@ -1,4 +1,4 @@
 users : 
   type: rest
-  resource: "UserBundle:UserRest"
+  resource: "CallOfBeerApiBundle:Default"
   name_prefix:  api_
