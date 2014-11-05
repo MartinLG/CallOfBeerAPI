@@ -2,3 +2,9 @@ call_of_beer_api:
     resource: "@CallOfBeerApiBundle/Resources/config/routing.yml"
     prefix:   /
 
+#API Rest Rooting
+rest : 
+	type : rest
+	resource : "routing_rest.yml"
+	prefix : /api
+
