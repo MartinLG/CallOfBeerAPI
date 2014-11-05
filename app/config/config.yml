@@ -55,7 +55,7 @@ doctrine:
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
-        #   2. Uncomment database_path in parameters.yml.dist
+          # 2. Uncomment database_path in parameters.yml.dist
         #   3. Uncomment next line:
         #     path:     "%database_path%"
 
@@ -88,3 +88,7 @@ fos_rest:
         default_engine: twig
     routing_loader:
         default_format: json
+
+sensio_framework_extra:
+    view:
+        annotations: false
