@@ -5,21 +5,33 @@ namespace CallOfBeer\ApiBundle\Controller;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use CallOfBeer\ApiBundle\Document\CobEvent;
+use CallOfBeer\ApiBundle\Document\Adress;
+use CallOfBeer\ApiBundle\Document\Geolocation;
+
 class EventController extends Controller
 {
     public function getEventsAction()
     {
-        $data = array();
-        $location = array();
+        $event = new CobEvent();
+        $adress = new Adress();
+        $location = new Geolocation();
 
-        $location['lat'] = 44.8637279;
-        $location['long'] = -0.586141;
+        $location->setLong(44.92);
+        $location->setLat(-0.75);
 
-        $data['name'] = "Awesome Party";
-        $data['adress'] = "89 quai des Chartrons 33000 Bordeaux"
-        $data['location'] = $location;
-        // $data['date'] = new DateTime;
+        $adress->setName("Ingesup");
+        $adress->setAdress("89 quai des Chartrons");
+        $adress->setZip(33000);
+        $adress->setCity("Bordeaux");
+        $adress->setCountry("France");
 
-        return $data;
+        $event->setName("Great Party at School");
+        $event->setAdress($adress);
+        $event->setLocation($location);
+
+        // var_dump($event);die();
+
+        return $event;
     }
 }
