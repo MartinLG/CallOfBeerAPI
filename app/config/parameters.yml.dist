@@ -19,3 +19,6 @@ parameters:
     debug_toolbar:          true
     debug_redirects:        false
     use_assetic_controller: true
+
+    elastic_host : localhost
+    elastic_port : 9200

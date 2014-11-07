@@ -7,8 +7,11 @@ use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\VirtualProperty;
 
+use FOS\ElasticaBundle\Configuration\Search;
+
 /** 
- * @ExclusionPolicy("all") 
+ * @ExclusionPolicy("all")
+ * @Search(repositoryClass="CallOfBeer\ApiBundle\SearchRepository\EventRepository")
  */
 class CobEvent {
     
@@ -93,7 +96,7 @@ class CobEvent {
     /**
      * Get the Event's date
      *
-     * @return DateTime
+     * @return \DateTime
      * @VirtualProperty 
      */
     public function getDate(){
@@ -103,7 +106,7 @@ class CobEvent {
     /**
      * Set date
      *
-     * @param  DateTime $date
+     * @param  \DateTime $date
      * @return self
      */
     public function setDate($date){

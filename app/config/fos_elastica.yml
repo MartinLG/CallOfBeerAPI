@@ -1,0 +1,10 @@
+fos_elastica:
+    clients:
+        default: { host: %elastic_host%, port: %elastic_port% }
+    serializer: ~
+    indexes:
+        callofbeer: 
+            types:
+                event:
+                    serializer:
+                        groups: [elastica, Default]

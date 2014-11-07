@@ -16,7 +16,7 @@ class Geolocation {
      * @Type("double")
      * @Expose
      */
-    protected $long;
+    protected $lon;
 
     /**
      * @Type("double")
@@ -25,23 +25,23 @@ class Geolocation {
     protected $lat;
 
     /**
-     * Get the Geolocation's long
+     * Get the Geolocation's lon
      *
      * @return double
      * @VirtualProperty 
      */
-    public function getLong(){
-        return $this->long;
+    public function getLon(){
+        return $this->lon;
     }
 
     /**
-     * Set long
+     * Set lon
      *
-     * @param  double $long
+     * @param  double $lon
      * @return self
      */
-    public function setLong($long){
-        $this->long = $long;
+    public function setLon($lon){
+        $this->lon = $lon;
         return $this;
     }
 
