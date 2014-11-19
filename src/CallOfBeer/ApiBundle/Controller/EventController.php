@@ -19,8 +19,8 @@ class EventController extends Controller
         $adress = new Adress();
         $location = new Geolocation();
 
-        $location->setLon(44.92);
-        $location->setLat(-0.75);
+        $location->setLat(44.8344);
+        $location->setLon(-0.5754);
 
         $adress->setName("Ingesup");
         $adress->setAdress("89 quai des Chartrons");
@@ -36,8 +36,8 @@ class EventController extends Controller
         $adress2 = new Adress();
         $location2 = new Geolocation();
 
-        $location2->setLon(44.92);
-        $location2->setLat(-0.75);
+        $location2->setLat(44.84);
+        $location2->setLon(-0.58);
 
         $adress2->setName("Martin's House");
         $adress2->setAdress("1 chemin de Pauge");
