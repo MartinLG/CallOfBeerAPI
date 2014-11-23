@@ -31,10 +31,13 @@ class EventController extends Controller
 
         $finder = $this->container->get('fos_elastica.finder.callofbeer.event');
 
+        $dateLimit = new \DateTime();
+        $dateLimit->sub(new \DateInterval('PT6H'));
+
         $dateFilter = new \Elastica\Filter\Range(
             'date', 
             array(
-                'gte' => "2014-11-23T21:58:07+0100",
+                'gte' => $dateLimit->format("Y-m-d\TH:i:sO"),
                 'lte' => 'now'
             )
         );
