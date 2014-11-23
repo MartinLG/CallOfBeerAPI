@@ -19,7 +19,7 @@ class EventController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $finder = $this->container->get('fos_elastica.index.callofbeer.event');
+        $finder = $this->container->get('fos_elastica.finder.callofbeer.event');
 
         $geoFilter = new GeoDistance('geolocation', array('lon' => -0.58,
              'lat' => 44.85), '100km');
@@ -30,10 +30,10 @@ class EventController extends Controller
 
         $query = new Filtered(new MatchAll(), $nested);
 
-        $elasticaQuery        = new \Elastica\Query();
+        $elasticaQuery = new \Elastica\Query();
         $elasticaQuery->setQuery($query);
 
-        $events = $finder->search($elasticaQuery);
+        $events = $finder->find($elasticaQuery);
 
         return $events;
     }

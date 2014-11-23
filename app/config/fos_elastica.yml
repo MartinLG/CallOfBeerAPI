@@ -23,5 +23,6 @@ fos_elastica:
                         model:  CallOfBeer\ApiBundle\Entity\CobEvent
                         provider: ~
                         listener: ~
+                        finder: ~
                     serializer:
                         groups: [elastica, Default]
