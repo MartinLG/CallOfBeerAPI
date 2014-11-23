@@ -37,8 +37,7 @@ class EventController extends Controller
         $dateFilter = new \Elastica\Filter\Range(
             'date', 
             array(
-                'gte' => $dateLimit->format("Y-m-d\TH:i:sO"),
-                'lte' => 'now'
+                'gte' => $dateLimit->format("Y-m-d\TH:i:sO")
             )
         );
 
