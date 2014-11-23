@@ -8,7 +8,7 @@ fos_elastica:
                 event:
                     mappings: 
                         name: { boost: 5 }
-                        date: { boost: 3 }
+                        date: { type: date, boost: 3 }
                         address:
                             type: "nested"
                             properties:

@@ -21,14 +21,21 @@ class EventController extends Controller
 
         $finder = $this->container->get('fos_elastica.finder.callofbeer.event');
 
-        $geoFilter = new GeoDistance('geolocation', array('lon' => -0.58,
-             'lat' => 44.85), '100km');
+        $dateFilter = new \Elastica\Filter\Range('date', array('gte' => "2014-11-23T21:58:07+0100",
+            'lte' => 'now'));
 
-        $nested  = new \Elastica\Filter\Nested();
+        $geoFilter = new GeoDistance('geolocation', array('lon' => -0.58,
+            'lat' => 44.85), '100km');
+
+        $nested = new \Elastica\Filter\Nested();
         $nested->setFilter($geoFilter);
         $nested->setPath("address");
 
-        $query = new Filtered(new MatchAll(), $nested);
+        $boolFilter = new \Elastica\Filter\Bool();
+        $boolFilter->addMust($nested);
+        $boolFilter->addMust($dateFilter);
+
+        $query = new Filtered(new MatchAll(), $boolFilter);
 
         $elasticaQuery = new \Elastica\Query();
         $elasticaQuery->setQuery($query);
@@ -53,7 +60,7 @@ class EventController extends Controller
         $address->setCity("Bordeaubhx");
         $address->setCountry("Francbghde");
 
-        $geoloc = array(-0.667, 44.868);
+        $geoloc = array(44.868, -0.667);
 
         $address->setGeolocation($geoloc);
         $event->setAddress($address);
