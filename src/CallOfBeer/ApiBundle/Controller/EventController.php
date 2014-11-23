@@ -13,20 +13,37 @@ use Elastica\Query;
 use Elastica\Query\MatchAll;
 use Elastica\Query\Filtered;
 
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+
 class EventController extends Controller
 {
     public function getEventsAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+        $topLat = $request->query->get('topLat');
+        $topLon = $request->query->get('topLon');
+        $botLat = $request->query->get('botLat');
+        $botLon = $request->query->get('botLon');
+
+        if (in_array(null, array($topLon, $topLat, $botLon, $botLat))) {
+            throw new InvalidArgumentException("Bad parameters. Paramaters : topLat, topLon, botLat, botLon");
+        }
 
         $finder = $this->container->get('fos_elastica.finder.callofbeer.event');
 
-        $dateFilter = new \Elastica\Filter\Range('date', array('gte' => "2014-11-23T21:58:07+0100",
-            'lte' => 'now'));
+        $dateFilter = new \Elastica\Filter\Range(
+            'date', 
+            array(
+                'gte' => "2014-11-23T21:58:07+0100",
+                'lte' => 'now'
+            )
+        );
 
         $geoFilter = new \Elastica\Filter\GeoBoundingBox('geolocation', array(
-            array('lon' => -1, 'lat' => 45),
-            array('lon' => 0, 'lat' => 44)));
+            array('lon' => floatval($topLon), 'lat' => floatval($topLat)),
+            array('lon' => floatval($botLon), 'lat' => floatval($botLat))
+            )
+        );
 
         $nested = new \Elastica\Filter\Nested();
         $nested->setFilter($geoFilter);
