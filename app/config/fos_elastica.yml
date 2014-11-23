@@ -22,5 +22,6 @@ fos_elastica:
                         driver: orm # orm, mongodb, propel are available
                         model:  CallOfBeer\ApiBundle\Entity\CobEvent
                         provider: ~
+                        listener: ~
                     serializer:
                         groups: [elastica, Default]

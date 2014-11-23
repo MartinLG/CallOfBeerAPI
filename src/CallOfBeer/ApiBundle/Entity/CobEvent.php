@@ -16,7 +16,6 @@ use FOS\ElasticaBundle\Configuration\Search;
  * @ExclusionPolicy("all")
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="CallOfBeer\ApiBundle\Entity\CobEventRepository")
- * @Search(repositoryClass="CallOfBeer\ApiBundle\SearchRepository\EventRepository")
  */
 class CobEvent
 {
