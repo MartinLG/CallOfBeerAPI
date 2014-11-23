@@ -24,8 +24,9 @@ class EventController extends Controller
         $dateFilter = new \Elastica\Filter\Range('date', array('gte' => "2014-11-23T21:58:07+0100",
             'lte' => 'now'));
 
-        $geoFilter = new GeoDistance('geolocation', array('lon' => -0.58,
-            'lat' => 44.85), '100km');
+        $geoFilter = new \Elastica\Filter\GeoBoundingBox('geolocation', array(
+            array('lon' => -1, 'lat' => 45),
+            array('lon' => 0, 'lat' => 44)));
 
         $nested = new \Elastica\Filter\Nested();
         $nested->setFilter($geoFilter);
