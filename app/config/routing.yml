@@ -6,5 +6,5 @@ call_of_beer_api:
 rest : 
     type : rest
     resource : "routing_rest.yml"
-    prefix : /api
+    prefix : /
 

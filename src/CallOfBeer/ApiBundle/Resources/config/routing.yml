@@ -1,3 +1,0 @@
-call_of_beer_api_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: CallOfBeerApiBundle:Default:index }
