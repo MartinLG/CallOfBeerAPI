@@ -4,6 +4,8 @@ namespace CallOfBeer\ApiBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+
 use CallOfBeer\ApiBundle\Entity\Address;
 use CallOfBeer\ApiBundle\Entity\CobEvent;
 use CallOfBeer\ApiBundle\Entity\Geolocation;
@@ -26,7 +28,10 @@ class EventController extends Controller
         $botLon = $request->query->get('botLon');
 
         if (in_array(null, array($topLon, $topLat, $botLon, $botLat))) {
-            throw new InvalidArgumentException("Bad parameters. Paramaters : topLat, topLon, botLat, botLon");
+            $response = new Response();
+            $response->setStatusCode(400);
+            $response->setContent("Bad parameters. Paramaters : topLat, topLon, botLat, botLon.");
+            return $response;
         }
 
         $finder = $this->container->get('fos_elastica.finder.callofbeer.event');
@@ -80,7 +85,10 @@ class EventController extends Controller
         $addressLon     = $request->request->get('addressLon');
 
         if ($eventId == null && in_array(null, array($eventName, $eventDate, $addressLat, $addressLon))) {
-            throw new InvalidArgumentException("Bad parameters. Paramaters : eventName, eventDate, addressLon, addressLat. To Update : eventId. Options : addressName, addressAddress, addressZip, addressCity, addressCountry");
+            $response = new Response();
+            $response->setStatusCode(400);
+            $response->setContent("Bad parameters. Paramaters : eventName, eventDate, addressLon, addressLat. To Update : eventId. Options : addressName, addressAddress, addressZip, addressCity, addressCountry.");
+            return $response;
         }
 
         $em = $this->getDoctrine()->getManager();
