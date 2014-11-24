@@ -97,7 +97,7 @@ class EventController extends Controller
         $address->setCity($addressCity);
         $address->setCountry($addressCountry);
 
-        $geoloc = array($addressLon, $addressLat);
+        $geoloc = array(floatval($addressLon), floatval($addressLat));
 
         $address->setGeolocation($geoloc);
         $event->setAddress($address);
