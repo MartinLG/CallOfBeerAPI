@@ -75,7 +75,7 @@ class Address
 
     /**
      * @Type("CallOfBeer\ApiBundle\Entity\CobEvent")
-     * @Expose
+     * 
      * @ORM\OneToMany(targetEntity="CobEvent", mappedBy="address", cascade={"remove", "persist"})
      */
     protected $events;
@@ -251,7 +251,6 @@ class Address
     /**
      * Get events
      *
-     * @VirtualProperty
      * @return \Doctrine\Common\Collections\Collection 
      */
     public function getEvents()
