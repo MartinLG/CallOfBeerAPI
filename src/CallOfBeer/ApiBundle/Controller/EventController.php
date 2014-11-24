@@ -68,6 +68,7 @@ class EventController extends Controller
     public function postEventsAction()
     {
         $request        = $this->getRequest();
+        $eventId        = $request->request->get('eventId');
         $eventName      = $request->request->get('eventName');
         $eventDate      = $request->request->get('eventDate');
         $addressName    = $request->request->get('addressName');
@@ -78,29 +79,48 @@ class EventController extends Controller
         $addressLat     = $request->request->get('addressLat');
         $addressLon     = $request->request->get('addressLon');
 
-        if (in_array(null, array($eventName, $eventDate, $addressLat, $addressLon))) {
-            throw new InvalidArgumentException("Bad parameters. Paramaters : eventName, eventDate, addressLon, addressLat. Options : addressName, addressAddress, addressZip, addressCity, addressCountry");
+        if ($eventId == null && in_array(null, array($eventName, $eventDate, $addressLat, $addressLon))) {
+            throw new InvalidArgumentException("Bad parameters. Paramaters : eventName, eventDate, addressLon, addressLat. To Update : eventId. Options : addressName, addressAddress, addressZip, addressCity, addressCountry");
         }
 
         $em = $this->getDoctrine()->getManager();
 
-        $event = new CobEvent();
-        $date = new \DateTime();
-        $date->setTimestamp(intval($eventDate));
-        $event->setDate($date);
-        $event->setName($eventName);
+        if ($eventId == null) {
+            $event = new CobEvent();
+            $address = new Address();
+        } else {
+            $event = $em->getRepository('CallOfBeerApiBundle:CobEvent')->find(intval($eventId));
+            $address = $event->getAddress();
+        }
 
-        $address = new Address();
-        $address->setName($addressName);
-        $address->setAddress($addressAddress);
-        $address->setZip($addressZip);
-        $address->setCity($addressCity);
-        $address->setCountry($addressCountry);
-
-        $geoloc = array(floatval($addressLon), floatval($addressLat));
-
-        $address->setGeolocation($geoloc);
-        $event->setAddress($address);
+        if ($eventDate != null) {
+            $date = new \DateTime();
+            $date->setTimestamp(intval($eventDate));
+            $event->setDate($date);
+        }
+        if ($eventName != null) {
+            $event->setName($eventName);
+        }
+        if ($addressName != null) {
+            $address->setName($addressName);
+        }
+        if ($addressAddress != null) {
+            $address->setAddress($addressAddress);
+        }
+        if ($addressZip != null) {
+            $address->setZip($addressZip);
+        }
+        if ($addressCity != null) {
+            $address->setCity($addressCity);
+        }
+        if ($addressCountry != null) {
+            $address->setCountry($addressCountry);
+        }
+        if ($addressLon != null && $addressLat != null) {
+            $geoloc = array(floatval($addressLon), floatval($addressLat));
+            $address->setGeolocation($geoloc);
+            $event->setAddress($address);
+        }
 
         $em->persist($event);
         $em->flush();
