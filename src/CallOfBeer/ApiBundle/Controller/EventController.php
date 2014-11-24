@@ -67,20 +67,37 @@ class EventController extends Controller
 
     public function postEventsAction()
     {
+        $request        = $this->getRequest();
+        $eventName      = $request->request->get('eventName');
+        $eventDate      = $request->request->get('eventDate');
+        $addressName    = $request->request->get('addressName');
+        $addressAddress = $request->request->get('addressAddress');
+        $addressZip     = $request->request->get('addressZip');
+        $addressCity    = $request->request->get('addressCity');
+        $addressCountry = $request->request->get('addressCountry');
+        $addressLat     = $request->request->get('addressLat');
+        $addressLon     = $request->request->get('addressLon');
+
+        if (in_array(null, array($eventName, $eventDate, $addressLat, $addressLon))) {
+            throw new InvalidArgumentException("Bad parameters. Paramaters : eventName, eventDate, addressLon, addressLat. Options : addressName, addressAddress, addressZip, addressCity, addressCountry");
+        }
+
         $em = $this->getDoctrine()->getManager();
 
         $event = new CobEvent();
-        $event->setDate(new \DateTime());
-        $event->setName("Martin");
+        $date = new \DateTime();
+        $date->setTimestamp(intval($eventDate));
+        $event->setDate($date);
+        $event->setName($eventName);
 
         $address = new Address();
-        $address->setName("TEUCvgfZ");
-        $address->setAddress("56 qubgbdfbai des Chartrons");
-        $address->setZip(33000);
-        $address->setCity("Bordeaubhx");
-        $address->setCountry("Francbghde");
+        $address->setName($addressName);
+        $address->setAddress($addressAddress);
+        $address->setZip($addressZip);
+        $address->setCity($addressCity);
+        $address->setCountry($addressCountry);
 
-        $geoloc = array(44.868, -0.667);
+        $geoloc = array($addressLon, $addressLat);
 
         $address->setGeolocation($geoloc);
         $event->setAddress($address);
