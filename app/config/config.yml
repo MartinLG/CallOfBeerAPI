@@ -107,6 +107,6 @@ nelmio_cors:
     paths:
         '^/':
             allow_origin: ['*']
-            allow_headers: ['X-Custom-Auth', 'Accept-Encoding', 'Cache-Control', 'Content-Type', 'Accept', 'Authorization']
+            allow_headers: ['X-Custom-Auth', 'Accept-Encoding', 'Cache-Control', 'Content-Type', 'Accept', 'Authorization', 'content-type']
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
             max_age: 3600

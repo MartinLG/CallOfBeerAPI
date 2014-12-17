@@ -19,6 +19,31 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
 class EventController extends Controller
 {
+    public function getEventAction()
+    {
+        $request = $this->getRequest();
+        $id = $request->query->get('id');
+        
+        if (is_null($id)) {
+            $response = new Response();
+            $response->setStatusCode(400);
+            $response->setContent("Bad parameters. Paramaters : id.");
+            return $response;
+        }
+
+        $em = $this->get('doctrine')->getEntityManager();
+        $event = $em->getRepository('CallOfBeerApiBundle:CobEvent')->find(intval($id));
+
+        if (is_null($event)) {
+            $response = new Response();
+            $response->setStatusCode(404);
+            $response->setContent("No event found.");
+            return $response;
+        }
+
+        return $event;
+    }
+
     public function getEventsAction()
     {
         $request = $this->getRequest();
