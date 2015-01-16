@@ -1,3 +1,7 @@
+call_of_beer_user:
+    resource: "@CallOfBeerUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
 call_of_beer_api:
     resource: "@CallOfBeerApiBundle/Resources/config/routing.yml"
     prefix:   /
