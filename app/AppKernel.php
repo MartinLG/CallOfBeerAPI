@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new CallOfBeer\ApiBundle\CallOfBeerApiBundle(),
             new FOS\ElasticaBundle\FOSElasticaBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
+            new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
