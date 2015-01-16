@@ -1,0 +1,3 @@
+call_of_beer_o_auth_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: CallOfBeerOAuthBundle:Default:index }

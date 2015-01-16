@@ -114,4 +114,9 @@ nelmio_cors:
 bazinga_geocoder: 
     providers:
         openstreetmap:
-            locale:               null
+            locale: null
+
+fos_user:
+    db_driver: orm 
+    firewall_name: main
+    user_class: CallOfBeer\UserBundle\Entity\User

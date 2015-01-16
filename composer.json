@@ -22,7 +22,9 @@
         "jms/serializer-bundle": "dev-master",
         "friendsofsymfony/elastica-bundle": "~3.0",
         "nelmio/cors-bundle": "~1.0",
-        "willdurand/geocoder-bundle": "@stable"
+        "willdurand/geocoder-bundle": "@stable",
+        "friendsofsymfony/oauth-server-bundle": "dev-master",
+        "friendsofsymfony/user-bundle": "~2.0@dev"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
