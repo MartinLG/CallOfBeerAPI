@@ -1,5 +1,5 @@
 blog_show:
-    path:   /address
+    path:   /api/address
     defaults:  { _controller: CallOfBeerApiBundle:Geocoding:getAddress }
 
 geocoding:

@@ -23,7 +23,7 @@ class AppKernel extends Kernel
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Bazinga\Bundle\GeocoderBundle\BazingaGeocoderBundle(),
             new CallOfBeer\UserBundle\CallOfBeerUserBundle(),
-            // new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
+            new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new CallOfBeer\OAuthBundle\CallOfBeerOAuthBundle(),
         );
