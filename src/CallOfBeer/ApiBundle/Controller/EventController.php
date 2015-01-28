@@ -90,7 +90,7 @@ class EventController extends Controller
         $elasticaQuery = new \Elastica\Query();
         $elasticaQuery->setQuery($query);
 
-        $events = $finder->find($elasticaQuery);
+        $events = $finder->find($elasticaQuery, 100);
 
         return $events;
     }
