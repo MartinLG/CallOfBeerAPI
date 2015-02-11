@@ -71,6 +71,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # Configure
-  config.vm.provision "shell", path: "build/vagrant-swap.sh"
-  config.vm.provision "shell", path: "build/vagrant.sh"
+  config.vm.provision "shell", path: "buildVagrant/vagrant-swap.sh"
+  config.vm.provision "shell", path: "buildVagrant/vagrant.sh"
 end
