@@ -45,7 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
 
-  config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", type: "nfs"
+  config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", type: "nfs", nfs_export: false
   config.vm.synced_folder "app/cache", "/vagrant/app/cache", type: "nfs", :nfs => { :mount_options => ["dmode=777","fmode=777"] }, :create => true
   config.vm.synced_folder "app/logs", "/vagrant/app/logs", type: "nfs", :nfs => { :mount_options => ["dmode=777","fmode=777"] }, :create => true
   config.nfs.map_uid = Process.uid
