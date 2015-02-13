@@ -9,6 +9,9 @@ else
     ENVS=$*
 fi
 
+sudo chmod -R 777 app/cache
+sudo chmod -R 777 app/logs
+
 for ENV in $ENVS
 do
     echo "Updating : " $ENV
@@ -16,3 +19,6 @@ do
     app/console assets:install --env=$ENV --symlink
     app/console cache:clear --env=$ENV
 done
+
+sudo chmod -R 777 app/cache
+sudo chmod -R 777 app/logs

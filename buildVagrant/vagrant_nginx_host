@@ -1,6 +1,6 @@
 server {
     listen 8081;
-    server_name dev.blitzr.com;
+    server_name dev.api.callofbeer.com;
     root /vagrant/web;
 
     access_log /var/log/nginx/callofbeerapi_dev_access.log;

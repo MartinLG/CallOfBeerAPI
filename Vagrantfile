@@ -22,13 +22,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # config.vm.network "forwarded_port", guest: 80, host: 8080
 
-  config.vm.network "forwarded_port", guest: 8081, host: 8081
-  config.vm.network "forwarded_port", guest: 6379, host: 6380
-  config.vm.network "forwarded_port", guest: 27017, host: 27017
+  config.vm.network "forwarded_port", guest: 8081, host: 8081, auto_correct: true
+  config.vm.network "forwarded_port", guest: 6379, host: 6380, auto_correct: true
+  config.vm.network "forwarded_port", guest: 27017, host: 27017, auto_correct: true
+  config.vm.network "forwarded_port", guest: 9200, host: 9201, auto_correct: true
+  config.vm.network "forwarded_port", guest: 9300, host: 9301, auto_correct: true
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network "private_network", type: "dhcp"
+  ##config.vm.network "private_network", type: "dhcp"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -45,11 +47,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
 
-  config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", type: "nfs", nfs_export: false
-  config.vm.synced_folder "app/cache", "/vagrant/app/cache", type: "nfs", :nfs => { :mount_options => ["dmode=777","fmode=777"] }, :create => true
-  config.vm.synced_folder "app/logs", "/vagrant/app/logs", type: "nfs", :nfs => { :mount_options => ["dmode=777","fmode=777"] }, :create => true
-  config.nfs.map_uid = Process.uid
-  config.nfs.map_gid = Process.gid
+  #config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", type: "nfs", nfs_export: false
+  #config.vm.synced_folder "app/cache", "/vagrant/app/cache", type: "nfs", :nfs => { :mount_options => ["dmode=777","fmode=777"] }, :create => true
+  #config.vm.synced_folder "app/logs", "/vagrant/app/logs", type: "nfs", :nfs => { :mount_options => ["dmode=777","fmode=777"] }, :create => true
+  #config.nfs.map_uid = Process.uid
+  #config.nfs.map_gid = Process.gid
+
+  config.vm.synced_folder ".", "/vagrant"
+  config.vm.synced_folder "app/cache", "/vagrant/app/cache", :mount_options => ["dmode=777","fmode=777"], :create => true
+  config.vm.synced_folder "app/logs", "/vagrant/app/logs", :mount_options => ["dmode=777","fmode=777"], :create => true
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.

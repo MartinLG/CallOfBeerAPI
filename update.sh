@@ -4,10 +4,13 @@
 #php composer.phar update
 
 if [ $# -eq '0' ]; then
-    ENVS='app'
+    ENVS='prod'
 else
     ENVS=$*
 fi
+
+sudo chmod -R 777 app/cache
+sudo chmod -R 777 app/logs
 
 for ENV in $ENVS
 do
@@ -16,3 +19,6 @@ do
     app/console assetic:dump --env=$ENV --no-debug
     app/console cache:clear --env=$ENV --no-debug
 done
+
+sudo chmod -R 777 app/cache
+sudo chmod -R 777 app/logs
