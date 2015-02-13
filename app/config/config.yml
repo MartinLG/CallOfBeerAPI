@@ -115,3 +115,18 @@ bazinga_geocoder:
     providers:
         openstreetmap:
             locale: null
+
+fos_user:
+    db_driver: orm 
+    firewall_name: main
+    user_class: CallOfBeer\UserBundle\Entity\User
+
+
+fos_oauth_server:
+    db_driver: orm       
+    client_class:        CallOfBeer\OAuthBundle\Entity\Client
+    access_token_class:  CallOfBeer\OAuthBundle\Entity\AccessToken
+    refresh_token_class: CallOfBeer\OAuthBundle\Entity\RefreshToken
+    auth_code_class:     CallOfBeer\OAuthBundle\Entity\AuthCode
+    service:
+        user_provider: fos_user.user_manager
