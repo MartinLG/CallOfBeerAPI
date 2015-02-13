@@ -114,4 +114,4 @@ nelmio_cors:
 bazinga_geocoder: 
     providers:
         openstreetmap:
-            locale:               null
+            locale: null
