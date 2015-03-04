@@ -1,4 +1,9 @@
 services:
-#    call_of_beer_o_auth.example:
-#        class: CallOfBeer\OAuthBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    oauth_event_listener:
+        class:  CallOfBeer\OAuthBundle\EventListener\OAuthEventListener
+        arguments:    [@doctrine.orm.entity_manager, @security.context]
+        calls:
+            - [setRequest, [@request_stack]]
+        tags:
+            - { name: kernel.event_listener, event: fos_oauth_server.pre_authorization_process, method: onPreAuthorizationProcess }
+            - { name: kernel.event_listener, event: fos_oauth_server.post_authorization_process, method: onPostAuthorizationProcess }

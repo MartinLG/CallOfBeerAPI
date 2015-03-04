@@ -4,6 +4,8 @@ namespace CallOfBeer\OAuthBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;  
 use Symfony\Component\HttpFoundation\Request;  
 use Symfony\Component\Security\Core\SecurityContext;  
+
+use Symfony\Component\HttpFoundation\JsonResponse;
   
 class SecurityController extends Controller  
 {  
@@ -35,5 +37,13 @@ class SecurityController extends Controller
     public function loginCheckAction(Request $request)  
     {  
           
+    }  
+
+    public function logoutAction(Request $request)  
+    {  
+        $this->get('security.context')->setToken(null);
+        $this->get('request')->getSession()->invalidate();
+
+        return new JsonResponse("logout");
     }  
 }  

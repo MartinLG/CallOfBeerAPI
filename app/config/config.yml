@@ -130,3 +130,8 @@ fos_oauth_server:
     auth_code_class:     CallOfBeer\OAuthBundle\Entity\AuthCode
     service:
         user_provider: fos_user.user_manager
+        auth_code_manager:      fos_oauth_server.auth_code_manager.default
+        options:
+            access_token_lifetime: 7776000
+            refresh_token_lifetime: 31536000
+            auth_code_lifetime: 30

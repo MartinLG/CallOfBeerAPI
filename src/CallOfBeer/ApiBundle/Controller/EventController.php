@@ -16,6 +16,7 @@ use Elastica\Query\MatchAll;
 use Elastica\Query\Filtered;
 
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class EventController extends Controller
 {
@@ -46,6 +47,7 @@ class EventController extends Controller
 
     public function getEventsAction()
     {
+
         $request = $this->getRequest();
         $topLat = $request->query->get('topLat');
         $topLon = $request->query->get('topLon');
@@ -97,6 +99,11 @@ class EventController extends Controller
 
     public function postEventsAction()
     {
+
+        if (false === $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw new AccessDeniedException();
+        }
+
         $request        = $this->getRequest();
         $eventId        = $request->request->get('eventId');
         $eventName      = $request->request->get('eventName');

@@ -2,3 +2,4 @@ events :
   type: rest
   resource:		"CallOfBeerApiBundle:Event"
   name_prefix:  api_
+

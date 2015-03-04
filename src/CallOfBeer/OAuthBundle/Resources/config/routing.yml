@@ -5,3 +5,7 @@ call_of_beer_o_auth_login:
 call_of_beer_o_auth_login_check:
     path:     /oauth/v2/auth_login_check
     defaults: { _controller: CallOfBeerOAuthBundle:Security:loginCheck }
+
+call_of_beer_o_auth_logout:
+    path:     /oauth/v2/auth/logout
+    defaults: { _controller: CallOfBeerOAuthBundle:Security:logout }
