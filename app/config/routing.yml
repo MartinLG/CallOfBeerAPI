@@ -1,15 +1,3 @@
-call_of_beer_o_auth:
-    resource: "@CallOfBeerOAuthBundle/Resources/config/routing.yml"
-    prefix:   /
-
-call_of_beer_user:
-    resource: "@CallOfBeerUserBundle/Resources/config/routing.yml"
-    prefix:   /
-
-call_of_beer_api:
-    resource: "@CallOfBeerApiBundle/Resources/config/routing.yml"
-    prefix:   /
-
 #API Rest Rooting
 rest : 
     type : rest
@@ -24,3 +12,16 @@ fos_oauth_server_token:
 
 fos_oauth_server_authorize:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
+
+call_of_beer_o_auth:
+    resource: "@CallOfBeerOAuthBundle/Resources/config/routing.yml"
+    prefix:   /
+
+call_of_beer_user:
+    resource: "@CallOfBeerUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+call_of_beer_api:
+    resource: "@CallOfBeerApiBundle/Resources/config/routing.yml"
+    prefix:   /
+

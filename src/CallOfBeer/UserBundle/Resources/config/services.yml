@@ -1,4 +1,6 @@
 services:
-#    call_of_beer_user.example:
-#        class: CallOfBeer\UserBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    callofbeer_user.user_created:
+        class: CallOfBeer\UserBundle\EventListener\UserCreatedListener
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name: kernel.event_subscriber }
