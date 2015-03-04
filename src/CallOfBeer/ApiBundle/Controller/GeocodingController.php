@@ -8,8 +8,21 @@ use CallOfBeer\ApiBundle\Entity\Address;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
 class GeocodingController extends Controller
 {
+    /**
+     * API endpoint to get an Address by Geolocation
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  requirements={
+     *      {"name"="lat", "requirement"="\d+", "require"=true, "dataType"="integer"},
+     *      {"name"="lon", "requirement"="\d+", "require"=true, "dataType"="integer"}
+     *  }
+     * )
+     */
     public function getAddressAction()
     {
         $request = $this->getRequest();
@@ -65,6 +78,16 @@ class GeocodingController extends Controller
         return $response;
     }
 
+    /**
+     * API endpoint to get a Geolocation by Address
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  requirements={
+     *      {"name"="address", "requirement"="\s+", "require"=true, "dataType"="string"}
+     *  }
+     * )
+     */
     public function getGeolocAction()
     {
         $request = $this->getRequest();

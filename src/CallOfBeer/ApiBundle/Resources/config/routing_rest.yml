@@ -3,3 +3,8 @@ events :
   resource:		"CallOfBeerApiBundle:Event"
   name_prefix:  api_
 
+geocoding : 
+  type: rest
+  resource:		"CallOfBeerApiBundle:Geocoding"
+  name_prefix:  api_
+

@@ -1,7 +1,7 @@
-blog_show:
-    path:   /address
-    defaults:  { _controller: CallOfBeerApiBundle:Geocoding:getAddress }
+# blog_show:
+#     path:   /address
+#     defaults:  { _controller: CallOfBeerApiBundle:Geocoding:getAddress }
 
-geocoding:
-    path:   /geoloc
-    defaults:  { _controller: CallOfBeerApiBundle:Geocoding:getGeoloc }
+# geocoding:
+#     path:   /geoloc
+#     defaults:  { _controller: CallOfBeerApiBundle:Geocoding:getGeoloc }

@@ -18,8 +18,21 @@ use Elastica\Query\Filtered;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
 class EventController extends Controller
 {
+    /**
+     * API endpoint to get a specific Event by Id
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="API endpoint to get a specific Event by Id",
+     *  requirements={
+     *      {"name"="id", "requirement"="\d+", "require"=true, "dataType"="integer"}
+     *  }
+     * )
+     */
     public function getEventAction()
     {
         $request = $this->getRequest();
@@ -45,6 +58,19 @@ class EventController extends Controller
         return $event;
     }
 
+    /**
+     * API endpoint to get Events by Geolocation
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  requirements={
+     *      {"name"="topLat", "requirement"="\d+", "require"=true, "dataType"="integer"},
+     *      {"name"="botLat", "requirement"="\d+", "require"=true, "dataType"="integer"},
+     *      {"name"="topLon", "requirement"="\d+", "require"=true, "dataType"="integer"},
+     *      {"name"="botLon", "requirement"="\d+", "require"=true, "dataType"="integer"}
+     *  }
+     * )
+     */
     public function getEventsAction()
     {
 
@@ -54,7 +80,7 @@ class EventController extends Controller
         $botLat = $request->query->get('botLat');
         $botLon = $request->query->get('botLon');
 
-        if (in_array(null, array($topLon, $topLat, $botLon, $botLat))) {
+        if (is_null($topLon) || is_null($topLat) || is_null($botLon) || is_null($botLat)) {
             $response = new Response();
             $response->setStatusCode(400);
             $response->setContent("Bad parameters. Paramaters : topLat, topLon, botLat, botLon.");
@@ -97,12 +123,35 @@ class EventController extends Controller
         return $events;
     }
 
+    /**
+     * API endpoint to post or update (if eventId is set) an Event
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  filters={
+     *      {"name"="eventId", "dataType"="integer", "description"="Edit an Event if set"}
+     *  },
+     *  requirements={
+     *      {"name"="eventName", "require"=true, "requirement"="\s+", "dataType"="string"},
+     *      {"name"="eventDate", "require"=true, "requirement"="\d+", "dataType"="integer"},
+     *      {"name"="addressLon", "require"=true, "requirement"="\d+", "dataType"="integer"},
+     *      {"name"="addressLat", "require"=true, "requirement"="\d+", "dataType"="integer"}
+     *  },
+     *  parameters={
+     *      {"name"="addressName", "required"=false, "dataType"="string"},
+     *      {"name"="addressAddress", "required"=false, "dataType"="string"},
+     *      {"name"="addressZip", "required"=false, "requirement"="\d+", "dataType"="integer", "Code Postal bande d'ignares !"},
+     *      {"name"="addressCity", "required"=false, "dataType"="string"},
+     *      {"name"="addressCountry", "required"=false, "dataType"="string"}
+     *  }
+     * )
+     */
     public function postEventsAction()
     {
 
-        if (false === $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        /*if (false === $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new AccessDeniedException();
-        }
+        }*/
 
         $request        = $this->getRequest();
         $eventId        = $request->request->get('eventId');
@@ -116,7 +165,7 @@ class EventController extends Controller
         $addressLat     = $request->request->get('addressLat');
         $addressLon     = $request->request->get('addressLon');
 
-        if ($eventId == null && in_array(null, array($eventName, $eventDate, $addressLat, $addressLon))) {
+        if ($eventId == null && (is_null($eventName) || is_null($eventDate) || is_null($addressLat) || is_null($addressLon))) {
             $response = new Response();
             $response->setStatusCode(400);
             $response->setContent("Bad parameters. Paramaters : eventName, eventDate, addressLon, addressLat. To Update : eventId. Options : addressName, addressAddress, addressZip, addressCity, addressCountry.");
@@ -130,6 +179,12 @@ class EventController extends Controller
             $address = new Address();
         } else {
             $event = $em->getRepository('CallOfBeerApiBundle:CobEvent')->find(intval($eventId));
+            if ($event == null) {
+                $response = new Response();
+                $response->setStatusCode(400);
+                $response->setContent("Bad parameters. Paramaters : eventId does not match any events.");
+                return $response;
+            }
             $address = $event->getAddress();
         }
 
