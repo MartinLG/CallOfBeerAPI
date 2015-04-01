@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 use CallOfBeer\ApiBundle\Entity\Address;
 use CallOfBeer\ApiBundle\Entity\CobEvent;
-use CallOfBeer\ApiBundle\Entity\Geolocation;
 
 use Elastica\Filter\GeoDistance;
 use Elastica\Query;
@@ -212,14 +211,16 @@ class EventController extends Controller
             $address->setCountry($addressCountry);
         }
         if ($addressLon != null && $addressLat != null) {
-            $geoloc = array(floatval($addressLat), floatval($addressLon));
+            $address->setLat(floatval($addressLat));
+            $address->setLon(floatval($addressLon));
+            $geoloc = array(floatval($addressLon), floatval($addressLat));
             $address->setGeolocation($geoloc);
-            $event->setAddress($address);
         }
+        $event->setAddress($address);
 
         $em->persist($event);
         $em->flush();
 
-        return true;
+        return $event;
     }
 }

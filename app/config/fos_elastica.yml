@@ -17,6 +17,8 @@ fos_elastica:
                                 zip: { boost: 3 }
                                 city: { boost: 3 }
                                 country: { boost: 1 }
+                                lat: { boost: 1 }
+                                lon: { boost: 1 }
                                 geolocation: { type: geo_point }
                     persistence:
                         driver: orm # orm, mongodb, propel are available

@@ -81,6 +81,24 @@ class Address
     protected $events;
 
     /**
+     * @var float
+     *
+     * @Type("float")
+     * @Expose
+     * @ORM\Column(name="lat", type="float")
+     */
+    private $lat;
+
+    /**
+     * @var float
+     *
+     * @Type("float")
+     * @Expose
+     * @ORM\Column(name="lon", type="float")
+     */
+    private $lon;
+
+    /**
      * @Type("array")
      * @Expose
      * @ORM\Column(name="geolocation", type="array")
@@ -258,6 +276,54 @@ class Address
         return $this->events;
     }
 
+
+    /**
+     * Set lat
+     *
+     * @param float $lat
+     * @return Geolocation
+     */
+    public function setLat($lat)
+    {
+        $this->lat = $lat;
+
+        return $this;
+    }
+
+    /**
+     * Get lat
+     *
+     * @VirtualProperty
+     * @return float 
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
+
+    /**
+     * Set lon
+     *
+     * @param float $lon
+     * @return Geolocation
+     */
+    public function setLon($lon)
+    {
+        $this->lon = $lon;
+
+        return $this;
+    }
+
+    /**
+     * Get lon
+     *
+     * @VirtualProperty
+     * @return float 
+     */
+    public function getLon()
+    {
+        return $this->lon;
+    }
 
     /**
      * Set geolocation
