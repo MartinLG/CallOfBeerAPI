@@ -212,7 +212,7 @@ class EventController extends Controller
             $address->setCountry($addressCountry);
         }
         if ($addressLon != null && $addressLat != null) {
-            $geoloc = array(floatval($addressLon), floatval($addressLat));
+            $geoloc = array(floatval($addressLat), floatval($addressLon));
             $address->setGeolocation($geoloc);
             $event->setAddress($address);
         }
