@@ -1,4 +1,4 @@
-//app/serializer/FOSUserBundle/Model.User.yml
+#app/serializer/FOSUserBundle/Model.User.yml
 FOS\UserBundle\Model\User:
     exclusion_policy: ALL
     properties : 
