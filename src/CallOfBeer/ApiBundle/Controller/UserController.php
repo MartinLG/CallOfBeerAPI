@@ -96,7 +96,7 @@ class UserController extends Controller
             return $response;
         }
 
-        $userManager = $container->get('fos_user.user_manager');
+        $userManager = $this->get('fos_user.user_manager');
 
         $user = $userManager->createUser();
         
