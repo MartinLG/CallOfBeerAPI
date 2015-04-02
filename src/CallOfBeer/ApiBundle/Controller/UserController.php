@@ -105,6 +105,13 @@ class UserController extends Controller
         $user->setPassword($this->get('security.password_encoder')->encodePassword($user, $password));
         $user->setEnabled(true);
 
+        $user->addAuthorizedClient($client);
+
+        if ($client->getName() != 'TestMobile') {
+            $cob = $this->em->getRepository('CallOfBeerOAuthBundle:Client')->findOneByName('TestMobile');
+            $user->addAuthorizedClient($cob);
+        }
+
         $userManager->updateUser($user);
 
         return $user;
