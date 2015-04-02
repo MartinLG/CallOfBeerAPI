@@ -90,7 +90,7 @@ class UserController extends Controller
 
         $client = $em->getRepository('CallOfBeerOAuthBundle:Client')->find(intval($client_id));
 
-        if (is_null($client)) {
+        if (is_null($client) || $client->getName() != 'TestMobile') {
             $response = new Response();
             $response->setStatusCode(403);
             return $response;
@@ -106,11 +106,6 @@ class UserController extends Controller
         $user->setEnabled(true);
 
         $user->addAuthorizedClient($client);
-
-        if ($client->getName() != 'TestMobile') {
-            $cob = $this->em->getRepository('CallOfBeerOAuthBundle:Client')->findOneByName('TestMobile');
-            $user->addAuthorizedClient($cob);
-        }
 
         $userManager->updateUser($user);
 
