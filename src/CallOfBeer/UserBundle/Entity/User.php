@@ -6,10 +6,17 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use CallOfBeer\OAuthBundle\Entity\Client;
 
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\VirtualProperty;
+
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User
+ *
+ * @ExclusionPolicy("all")
  *
  * @ORM\Table(name="cob_user")
  * @ORM\Entity(repositoryClass="CallOfBeer\UserBundle\Entity\UserRepository")
@@ -19,6 +26,8 @@ class User extends BaseUser
     /**
      * @var integer
      *
+     * @Expose
+     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -26,6 +35,8 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @Type("CallOfBeer\OAuthBundle\Entity\Client")
+     * @Expose
      * @ORM\ManyToMany(targetEntity="CallOfBeer\OAuthBundle\Entity\Client", cascade={"persist"})
      */
     private $authorizedClients;
@@ -34,6 +45,17 @@ class User extends BaseUser
     {
         parent::__construct();
         $this->authorizedClients = new ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @VirtualProperty 
+     * @return integer 
+     */
+    public function getId() 
+    {
+        return $this->id;
     }
 
     public function addAuthorizedClient(Client $client)
@@ -52,6 +74,12 @@ class User extends BaseUser
         $this->authorizedClients->removeElement($client);
     }
 
+    /**
+     * Get AuthorizedeClients
+     *
+     * @VirtualProperty
+     * @return \CallOfBeer\OAuthBundle\Entity\Client  
+     */
     public function getAuthorizedClients()
     {
        return $this->authorizedClients;

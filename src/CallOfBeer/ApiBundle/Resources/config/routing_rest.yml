@@ -8,3 +8,7 @@ geocoding :
   resource:		"CallOfBeerApiBundle:Geocoding"
   name_prefix:  api_
 
+users : 
+  type: rest
+  resource:		"CallOfBeerApiBundle:User"
+  name_prefix:  api_
