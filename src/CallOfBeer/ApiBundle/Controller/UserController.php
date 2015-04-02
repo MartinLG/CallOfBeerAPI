@@ -103,6 +103,7 @@ class UserController extends Controller
         $user->setUsername($username);
         $user->setEmail($email);
         $user->setPassword($password);
+        $user->setEnabled(true);
 
         $userManager->updateUser($user);
 
