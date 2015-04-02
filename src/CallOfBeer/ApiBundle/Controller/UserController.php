@@ -5,6 +5,7 @@ namespace CallOfBeer\ApiBundle\Controller;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 use CallOfBeer\UserBundle\Entity\User;
 use CallOfBeer\ApiBundle\Entity\Address;
@@ -110,5 +111,15 @@ class UserController extends Controller
         $userManager->updateUser($user);
 
         return $user;
+    }
+
+
+
+    public function getMeAction() {
+        if (false === $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw new AccessDeniedException();
+        }
+
+        return $this->getUser();
     }
 }
