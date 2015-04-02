@@ -1,0 +1,3 @@
+#app/serializer/FOSOAuthBundle/Model.Client.yml
+FOS\OAuthServerBundle\Model\Client:
+    exclusion_policy: ALL

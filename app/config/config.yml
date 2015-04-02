@@ -172,3 +172,6 @@ jms_serializer:
             FOSUB:
                 namespace_prefix: "FOS\\UserBundle"
                 path: "%kernel.root_dir%/serializer/FOSUserBundle"
+            FOSOAUTH:
+                namespace_prefix: "FOS\\OAuthServerBundle"
+                path: "%kernel.root_dir%/serializer/FOSOAuthServerBundle"
