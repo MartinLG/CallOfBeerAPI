@@ -102,7 +102,7 @@ class UserController extends Controller
         
         $user->setUsername($username);
         $user->setEmail($email);
-        $user->setPassword($password);
+        $user->setPassword($this->get('security.password_encoder')->encodePassword($user, $password));
         $user->setEnabled(true);
 
         $userManager->updateUser($user);
