@@ -14,6 +14,8 @@ use JMS\Serializer\Annotation\VirtualProperty;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="CallOfBeer\OAuthBundle\Entity\ClientRepository")
+ *
+ * @ExclusionPolicy("all")
  */
 class Client extends BaseClient
 {

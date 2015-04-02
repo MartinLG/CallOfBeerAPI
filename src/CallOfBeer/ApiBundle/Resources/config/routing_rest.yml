@@ -10,5 +10,5 @@ geocoding :
 
 users : 
   type: rest
-  resource:		"CallOfBeerApiBundle:User"
+  resource:		"CallOfBeerUserBundle:User"
   name_prefix:  api_

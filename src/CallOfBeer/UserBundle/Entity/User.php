@@ -16,21 +16,21 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * User
  *
- * @ExclusionPolicy("all")
- *
  * @ORM\Table(name="cob_user")
  * @ORM\Entity(repositoryClass="CallOfBeer\UserBundle\Entity\UserRepository")
+ *
+ * @ExclusionPolicy("all")
  */
 class User extends BaseUser
 {
     /**
      * @var integer
      *
-     * @Expose
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Expose
      */
     protected $id;
 

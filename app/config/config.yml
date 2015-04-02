@@ -165,3 +165,10 @@ nelmio_api_doc:
 
             default_format: json    # default is `json`,
                                     # default content format to request (see formats)
+
+jms_serializer:
+    metadata:
+        directories:
+            FOSUB:
+                namespace_prefix: "FOS\\UserBundle"
+                path: "%kernel.root_dir%/serializer/FOSUserBundle"
