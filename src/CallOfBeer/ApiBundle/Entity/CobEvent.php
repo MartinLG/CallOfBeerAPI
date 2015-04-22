@@ -117,6 +117,8 @@ class CobEvent
         parent::__construct();
         $this->subscribers = new ArrayCollection();
         $this->guests = new ArrayCollection();
+        $this->maybe = new ArrayCollection();
+        $this->declined = new ArrayCollection();
     }
 
     /**
