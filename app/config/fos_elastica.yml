@@ -20,6 +20,7 @@ fos_elastica:
                                 lat: { boost: 1 }
                                 lon: { boost: 1 }
                                 geolocation: { type: geo_point }
+                                private: ~
                     persistence:
                         driver: orm # orm, mongodb, propel are available
                         model:  CallOfBeer\ApiBundle\Entity\CobEvent
