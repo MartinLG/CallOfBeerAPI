@@ -12,6 +12,8 @@ use CallOfBeer\UserBundle\Entity\User;
 
 use FOS\ElasticaBundle\Configuration\Search;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * CobEvent
  *
