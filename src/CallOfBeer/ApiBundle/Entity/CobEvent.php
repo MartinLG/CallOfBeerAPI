@@ -114,7 +114,6 @@ class CobEvent
 
     public function __construct()
     {
-        parent::__construct();
         $this->subscribers = new ArrayCollection();
         $this->guests = new ArrayCollection();
         $this->maybe = new ArrayCollection();
