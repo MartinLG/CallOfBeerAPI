@@ -5,6 +5,7 @@ namespace CallOfBeer\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use CallOfBeer\OAuthBundle\Entity\Client;
+use CallOfBeer\ApiBundle\Entity\EventUserRole;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
@@ -41,10 +42,18 @@ class User extends BaseUser
      */
     private $authorizedClients;
 
+    /**
+     * @Type("CallOfBeer\ApiBundle\Entity\EventUserRole")
+     * 
+     * @ORM\OneToMany(targetEntity="CallOfBeer\ApiBundle\Entity\EventUserRole", mappedBy="user", cascade={"remove", "persist"})
+     */
+    protected $events;
+
     public function __construct()
     {
         parent::__construct();
         $this->authorizedClients = new ArrayCollection();
+        $this->events            = new ArrayCollection();
     }
 
     /**
@@ -83,5 +92,38 @@ class User extends BaseUser
     public function getAuthorizedClients()
     {
        return $this->authorizedClients;
+    }
+
+    /**
+     * Add events
+     *
+     * @param \CallOfBeer\ApiBundle\Entity\EventUserRole $events
+     * @return EventUserRole
+     */
+    public function addEvent(\CallOfBeer\ApiBundle\Entity\EventUserRole $events)
+    {
+        $this->events[] = $events;
+
+        return $this;
+    }
+
+    /**
+     * Remove events
+     *
+     * @param \CallOfBeer\ApiBundle\Entity\EventUserRole $events
+     */
+    public function removeEvent(\CallOfBeer\ApiBundle\Entity\EventUserRole $events)
+    {
+        $this->events->removeElement($events);
+    }
+
+    /**
+     * Get events
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEvent()
+    {
+        return $this->events;
     }
 }

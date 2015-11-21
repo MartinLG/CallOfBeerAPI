@@ -70,56 +70,15 @@ class CobEvent
     protected $address;
 
     /**
-     * @Type("CallOfBeer\UserBundle\Entity\User")
-     * @Expose
-     * @ORM\ManyToMany(targetEntity="CallOfBeer\UserBundle\Entity\User", cascade={"persist"})
-     * @ORM\JoinTable(name="cobevent_users_subscriber",
-     *      joinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
-     *      )
+     * @Type("CallOfBeer\ApiBundle\Entity\EventUserRole")
+     * 
+     * @ORM\OneToMany(targetEntity="EventUserRole", mappedBy="event", cascade={"remove", "persist"})
      */
-    private $subscribers;
-
-    /**
-     * @Type("CallOfBeer\UserBundle\Entity\User")
-     * @Expose
-     * @ORM\ManyToMany(targetEntity="CallOfBeer\UserBundle\Entity\User", cascade={"persist"})
-     * @ORM\JoinTable(name="cobevent_users_guest",
-     *      joinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
-     *      )
-     */
-    private $guests;
-
-    /**
-     * @Type("CallOfBeer\UserBundle\Entity\User")
-     * @Expose
-     * @ORM\ManyToMany(targetEntity="CallOfBeer\UserBundle\Entity\User", cascade={"persist"})
-     * @ORM\JoinTable(name="cobevent_users_declined",
-     *      joinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
-     *      )
-     */
-    private $declined;
-
-    /**
-     * @Type("CallOfBeer\UserBundle\Entity\User")
-     * @Expose
-     * @ORM\ManyToMany(targetEntity="CallOfBeer\UserBundle\Entity\User", cascade={"persist"})
-     * @ORM\JoinTable(name="cobevent_users_maybe",
-     *      joinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
-     *      )
-     */
-    private $maybe;
-
+    protected $users;
 
     public function __construct()
     {
-        $this->subscribers = new ArrayCollection();
-        $this->guests = new ArrayCollection();
-        $this->maybe = new ArrayCollection();
-        $this->declined = new ArrayCollection();
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -229,111 +188,36 @@ class CobEvent
         return $this->private;
     }
 
-    public function addSubscriber(User $user)
+    /**
+     * Add users
+     *
+     * @param \CallOfBeer\ApiBundle\Entity\EventUserRole $users
+     * @return EventUserRole
+     */
+    public function addUser(\CallOfBeer\ApiBundle\Entity\EventUserRole $users)
     {
-        $this->subscribers[] = $user;
+        $this->users[] = $users;
+
         return $this;
     }
 
-    public function isSubscriber(User $user)
+    /**
+     * Remove users
+     *
+     * @param \CallOfBeer\ApiBundle\Entity\EventUserRole $users
+     */
+    public function removeUser(\CallOfBeer\ApiBundle\Entity\EventUserRole $users)
     {
-        return $this->subscribers->contains($user);
-    }
-
-    public function removeSubscriber(User $user)
-    {
-        $this->subscribers->removeElement($user);
+        $this->users->removeElement($users);
     }
 
     /**
-     * Get Subscribers
+     * Get users
      *
-     * @VirtualProperty
-     * @return \CallOfBeer\UserBundle\Entity\User  
+     * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getSubscribers()
+    public function getUsers()
     {
-       return $this->subscribers;
-    }
-
-    public function addGuest(User $user)
-    {
-        $this->guests[] = $user;
-        return $this;
-    }
-
-    public function isGuest(User $user)
-    {
-        return $this->guests->contains($user);
-    }
-
-    public function removeGuest(User $user)
-    {
-        $this->guests->removeElement($user);
-    }
-
-    /**
-     * Get Guests
-     *
-     * @VirtualProperty
-     * @return \CallOfBeer\UserBundle\Entity\User  
-     */
-    public function getGuests()
-    {
-       return $this->guests;
-    }
-
-    public function addDeclined(User $user)
-    {
-        $this->declined[] = $user;
-        return $this;
-    }
-
-    public function isDeclined(User $user)
-    {
-        return $this->declined->contains($user);
-    }
-
-    public function removeDeclined(User $user)
-    {
-        $this->declined->removeElement($user);
-    }
-
-    /**
-     * Get Declined
-     *
-     * @VirtualProperty
-     * @return \CallOfBeer\UserBundle\Entity\User  
-     */
-    public function getDeclined()
-    {
-       return $this->declined;
-    }
-
-    public function addMaybe(User $user)
-    {
-        $this->maybe[] = $user;
-        return $this;
-    }
-
-    public function isMaybe(User $user)
-    {
-        return $this->maybe->contains($user);
-    }
-
-    public function removeMaybe(User $user)
-    {
-        $this->maybe->removeElement($user);
-    }
-
-    /**
-     * Get Maybe
-     *
-     * @VirtualProperty
-     * @return \CallOfBeer\UserBundle\Entity\User  
-     */
-    public function getMaybe()
-    {
-       return $this->maybe;
+        return $this->users;
     }
 }

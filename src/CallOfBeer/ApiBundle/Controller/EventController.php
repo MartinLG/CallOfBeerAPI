@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use CallOfBeer\ApiBundle\Entity\Address;
 use CallOfBeer\ApiBundle\Entity\CobEvent;
+use CallOfBeer\ApiBundle\Entity\EventUserRole;
 
 use Elastica\Filter\GeoDistance;
 use Elastica\Query;
@@ -226,6 +227,13 @@ class EventController extends Controller
             $event->setPrivate(false);
         }
 
+        $admin = new EventUserRole();
+        $admin->setRole("subscriber");
+        $admin->setAdmin(true);
+        $admin->setUser($this->getUser());
+
+        $event->addUser($admin);
+
         $em->persist($event);
         $em->flush();
 
@@ -233,16 +241,17 @@ class EventController extends Controller
     }
 
     /**
-     * API endpoint to post Users as Guest of an event
+     * API endpoint to post User's role in an event
      *
      * @ApiDoc(
      *  requirements={
      *      {"name"="eventId", "require"=true, "requirement"="\d+", "dataType"="integer"},
-     *      {"name"="userId", "require"=true, "requirement"="\d+", "dataType"="integer"}
+     *      {"name"="userId", "require"=true, "requirement"="\d+", "dataType"="integer"},
+     *      {"name"="role", "require"=true, "requirement"="\s", "dataType"="string"}
      *  }
      * )
      */
-    public function postEventsGuestAddAction()
+    public function postEventUserRoleAction()
     {
 
         if (false === $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -252,15 +261,17 @@ class EventController extends Controller
         $request        = $this->getRequest();
         $eventId        = $request->request->get('eventId');
         $userId         = $request->request->get('userId');
+        $role           = $request->request->get('role');
 
-        if ($eventId == null || $userId == null) {
+        if ($eventId == null || $role == null || !in_array($role, array('subscriber', 'guest', 'admin', 'maybe', 'declined')) {
             $response = new Response();
             $response->setStatusCode(400);
-            $response->setContent("Bad parameters. Paramaters : eventId, userId.");
+            $response->setContent("Bad parameters. Paramaters : eventId role. Option : userId (if different from logged user).");
             return $response;
         }
 
         $em = $this->getDoctrine()->getManager();
+
         $event = $em->getRepository('CallOfBeerApiBundle:CobEvent')->find(intval($eventId));
 
         if ($event == null) {
@@ -270,35 +281,29 @@ class EventController extends Controller
             return $response;
         }
 
-        $guest = $em->getRepository('CallOfBeerUserBundle:User')->find(intval($userId));
+        $user = $this->getUser();
 
-        if ($event == null) {
+        if ($userId == null) {
+            $userToAdd = $user;
+        } else {
+            $userToAdd = $em->getRepository('CallOfBeerUserBundle:User')->find(intval($userId));
+        }
+
+        if ($user == null) {
             $response = new Response();
             $response->setStatusCode(400);
             $response->setContent("Bad parameters. Paramaters : userId does not match any user.");
             return $response;
         }
 
-        if ($event->isGuest($guest)) {
+        $userRole = $em->getRepository('CallOfBeerApiBundle:EventUserRole')->getByEventAndUser($event->getId(), $user->getId());
+
+        if ($userRole == null && $event->getPrivate()) {
             $response = new Response();
-            $response->setStatusCode(400);
-            $response->setContent("The user is already guested.");
+            $response->setStatusCode(403);
+            $response->setContent("You don't have rights to get this role on this event.");
             return $response;
         }
-
-        if ($event->isSubscriber($guest)) {
-            $event->removeSubscriber($guest);
-        }
-
-        if ($event->isDeclined($guest)) {
-            $event->removeDeclined($guest);
-        }
-
-        if ($event->isMaybe($guest)) {
-            $event->removeMaybe($guest);
-        }
-
-        $event->addGuest($guest);
 
         $em->persist($event);
         $em->flush();
@@ -306,225 +311,5 @@ class EventController extends Controller
         return $event;
     }
 
-    /**
-     * API endpoint to post Users as Subscriber of an event
-     *
-     * @ApiDoc(
-     *  requirements={
-     *      {"name"="eventId", "require"=true, "requirement"="\d+", "dataType"="integer"},
-     *      {"name"="userId", "require"=true, "requirement"="\d+", "dataType"="integer"}
-     *  }
-     * )
-     */
-    public function postEventsSubscriberAddAction()
-    {
-
-        if (false === $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw new AccessDeniedException();
-        }
-
-        $request        = $this->getRequest();
-        $eventId        = $request->request->get('eventId');
-        $userId         = $request->request->get('userId');
-
-        if ($eventId == null || $userId == null) {
-            $response = new Response();
-            $response->setStatusCode(400);
-            $response->setContent("Bad parameters. Paramaters : eventId, userId.");
-            return $response;
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $event = $em->getRepository('CallOfBeerApiBundle:CobEvent')->find(intval($eventId));
-
-        if ($event == null) {
-            $response = new Response();
-            $response->setStatusCode(400);
-            $response->setContent("Bad parameters. Paramaters : eventId does not match any event.");
-            return $response;
-        }
-
-        $guest = $em->getRepository('CallOfBeerUserBundle:User')->find(intval($userId));
-
-        if ($event == null) {
-            $response = new Response();
-            $response->setStatusCode(400);
-            $response->setContent("Bad parameters. Paramaters : userId does not match any user.");
-            return $response;
-        }
-
-        if ($event->isSubscriber($guest)) {
-            $response = new Response();
-            $response->setStatusCode(400);
-            $response->setContent("The user is already subscribed.");
-            return $response;
-        }
-
-        if ($event->isGuest($guest)) {
-            $event->removeGuest($guest);
-        }
-
-        if ($event->isDeclined($guest)) {
-            $event->removeDeclined($guest);
-        }
-
-        if ($event->isMaybe($guest)) {
-            $event->removeMaybe($guest);
-        }
-
-        $event->addSubscriber($guest);
-
-        $em->persist($event);
-        $em->flush();
-
-        return $event;
-    }
-
-    /**
-     * API endpoint to post Users as Maybe of an event
-     *
-     * @ApiDoc(
-     *  requirements={
-     *      {"name"="eventId", "require"=true, "requirement"="\d+", "dataType"="integer"},
-     *      {"name"="userId", "require"=true, "requirement"="\d+", "dataType"="integer"}
-     *  }
-     * )
-     */
-    public function postEventsMaybeAddAction()
-    {
-
-        if (false === $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw new AccessDeniedException();
-        }
-
-        $request        = $this->getRequest();
-        $eventId        = $request->request->get('eventId');
-        $userId         = $request->request->get('userId');
-
-        if ($eventId == null || $userId == null) {
-            $response = new Response();
-            $response->setStatusCode(400);
-            $response->setContent("Bad parameters. Paramaters : eventId, userId.");
-            return $response;
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $event = $em->getRepository('CallOfBeerApiBundle:CobEvent')->find(intval($eventId));
-
-        if ($event == null) {
-            $response = new Response();
-            $response->setStatusCode(400);
-            $response->setContent("Bad parameters. Paramaters : eventId does not match any event.");
-            return $response;
-        }
-
-        $guest = $em->getRepository('CallOfBeerUserBundle:User')->find(intval($userId));
-
-        if ($event == null) {
-            $response = new Response();
-            $response->setStatusCode(400);
-            $response->setContent("Bad parameters. Paramaters : userId does not match any user.");
-            return $response;
-        }
-
-        if ($event->isMaybe($guest)) {
-            $response = new Response();
-            $response->setStatusCode(400);
-            $response->setContent("The user is already maybe.");
-            return $response;
-        }
-
-        if ($event->isGuest($guest)) {
-            $event->removeGuest($guest);
-        }
-
-        if ($event->isDeclined($guest)) {
-            $event->removeDeclined($guest);
-        }
-
-        if ($event->isSubscriber($guest)) {
-            $event->removeSubscriber($guest);
-        }
-
-        $event->addMaybe($guest);
-
-        $em->persist($event);
-        $em->flush();
-
-        return $event;
-    }
-
-    /**
-     * API endpoint to post Users as Decliner of an event
-     *
-     * @ApiDoc(
-     *  requirements={
-     *      {"name"="eventId", "require"=true, "requirement"="\d+", "dataType"="integer"},
-     *      {"name"="userId", "require"=true, "requirement"="\d+", "dataType"="integer"}
-     *  }
-     * )
-     */
-    public function postEventsDeclineAddAction()
-    {
-
-        if (false === $this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw new AccessDeniedException();
-        }
-
-        $request        = $this->getRequest();
-        $eventId        = $request->request->get('eventId');
-        $userId         = $request->request->get('userId');
-
-        if ($eventId == null || $userId == null) {
-            $response = new Response();
-            $response->setStatusCode(400);
-            $response->setContent("Bad parameters. Paramaters : eventId, userId.");
-            return $response;
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $event = $em->getRepository('CallOfBeerApiBundle:CobEvent')->find(intval($eventId));
-
-        if ($event == null) {
-            $response = new Response();
-            $response->setStatusCode(400);
-            $response->setContent("Bad parameters. Paramaters : eventId does not match any event.");
-            return $response;
-        }
-
-        $guest = $em->getRepository('CallOfBeerUserBundle:User')->find(intval($userId));
-
-        if ($event == null) {
-            $response = new Response();
-            $response->setStatusCode(400);
-            $response->setContent("Bad parameters. Paramaters : userId does not match any user.");
-            return $response;
-        }
-
-        if ($event->isDeclined($guest)) {
-            $response = new Response();
-            $response->setStatusCode(400);
-            $response->setContent("The user is already decliner.");
-            return $response;
-        }
-
-        if ($event->isGuest($guest)) {
-            $event->removeGuest($guest);
-        }
-
-        if ($event->isMaybe($guest)) {
-            $event->removeMaybe($guest);
-        }
-
-        if ($event->isSubscriber($guest)) {
-            $event->removeSubscriber($guest);
-        }
-
-        $event->addDeclined($guest);
-
-        $em->persist($event);
-        $em->flush();
-
-        return $event;
-    }
+    
 }
