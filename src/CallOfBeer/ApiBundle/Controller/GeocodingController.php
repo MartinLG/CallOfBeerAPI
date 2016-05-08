@@ -104,7 +104,7 @@ class GeocodingController extends Controller
 
         $addressReturn = $this->container
                     ->get('bazinga_geocoder.geocoder')
-                    ->using('openstreetmap')
+                    ->using('google_maps')
                     ->geocode($address);
 
         $serializer = $this->container->get('jms_serializer');

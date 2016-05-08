@@ -115,6 +115,11 @@ bazinga_geocoder:
     providers:
         openstreetmap:
             locale: null
+        google_maps:
+            locale:               null
+            region:               null
+            use_ssl:              true
+            api_key:              AIzaSyAbSAVJ_frbIGoZ7xrHJluJcZ-NfJkvtOY
 
 fos_user:
     db_driver: orm 
