@@ -36,10 +36,12 @@ class GeocodingController extends Controller
             return $response;
         }
 
-        $addressReturn = $this->container
+        $addresses = $this->container
                     ->get('bazinga_geocoder.geocoder')
                     ->using('openstreetmap')
                     ->reverse($lat, $lon);
+
+        $addressReturn = $addresses->first();
 
         $address = new Address();
 
@@ -48,8 +50,8 @@ class GeocodingController extends Controller
         array_push($geo, $lon);
         $address->setGeolocation($geo);
 
-        if ($addressReturn->getZipcode()) {
-            $address->setZip($addressReturn->getZipcode());
+        if ($addressReturn->getPostalCode()) {
+            $address->setZip($addressReturn->getPostalCode());
         }
 
         $textAdress = "";
@@ -62,8 +64,8 @@ class GeocodingController extends Controller
         }
         $address->setAddress($textAdress);
 
-        if ($addressReturn->getCity()) {
-            $address->setCity($addressReturn->getCity());
+        if ($addressReturn->getLocality()) {
+            $address->setCity($addressReturn->getLocality());
         }
 
         if ($addressReturn->getCountry()) {
