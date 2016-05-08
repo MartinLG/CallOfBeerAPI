@@ -38,7 +38,7 @@ class EventUserRole
     /**
      * @Type("CallOfBeer\ApiBundle\Entity\CobEvent")
      * @Expose
-     * @ORM\ManyToOne(targetEntity="CobEvent", inversedBy="users", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CallOfBeer\ApiBundle\Entity\CobEvent", inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id")
      */
     protected $event;

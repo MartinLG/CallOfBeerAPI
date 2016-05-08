@@ -227,20 +227,15 @@ class EventController extends Controller
             $event->setPrivate(false);
         }
 
-        $user = $this->getUser();
-
         $admin = new EventUserRole();
         $admin->setRole("subscriber");
         $admin->setAdmin(true);
-        $admin->setUser($user);
-
-        $user->addEvent($admin);
+        $admin->setUser($this->getUser());
+        $admin->setEvent($event);
 
         $event->addUser($admin);
 
         $em->persist($event);
-        $em->persist($admin);
-        $em->persist($user);
         $em->flush();
 
         return $event;

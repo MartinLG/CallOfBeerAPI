@@ -122,7 +122,7 @@ class User extends BaseUser
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getEvent()
+    public function getEvents()
     {
         return $this->events;
     }
