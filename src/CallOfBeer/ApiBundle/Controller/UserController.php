@@ -91,7 +91,7 @@ class UserController extends Controller
 
         $client = $em->getRepository('CallOfBeerOAuthBundle:Client')->find(intval($client_id));
 
-        if (is_null($client) || $client->getName() != 'TestMobile') {
+        if (is_null($client) || $client->getName() != 'CallOfBeer') {
             $response = new Response();
             $response->setStatusCode(403);
             return $response;
