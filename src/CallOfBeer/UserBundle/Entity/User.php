@@ -37,7 +37,6 @@ class User extends BaseUser
 
     /**
      * @Type("CallOfBeer\OAuthBundle\Entity\Client")
-     * @Expose
      * @ORM\ManyToMany(targetEntity="CallOfBeer\OAuthBundle\Entity\Client", cascade={"persist"})
      */
     private $authorizedClients;
@@ -45,6 +44,7 @@ class User extends BaseUser
     /**
      * @Type("CallOfBeer\ApiBundle\Entity\EventUserRole")
      * 
+     * @Expose
      * @ORM\OneToMany(targetEntity="CallOfBeer\ApiBundle\Entity\EventUserRole", mappedBy="user", cascade={"remove", "persist"})
      */
     protected $events;

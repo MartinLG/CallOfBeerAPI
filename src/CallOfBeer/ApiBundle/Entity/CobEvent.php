@@ -72,6 +72,7 @@ class CobEvent
     /**
      * @Type("CallOfBeer\ApiBundle\Entity\EventUserRole")
      * 
+     * @Expose
      * @ORM\OneToMany(targetEntity="EventUserRole", mappedBy="event", cascade={"remove", "persist"})
      */
     protected $users;
@@ -219,5 +220,16 @@ class CobEvent
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Set users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function setUsers($users)
+    {
+        $this->users = $users;
+        return $this;
     }
 }

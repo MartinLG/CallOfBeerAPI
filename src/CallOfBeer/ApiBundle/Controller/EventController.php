@@ -227,14 +227,20 @@ class EventController extends Controller
             $event->setPrivate(false);
         }
 
+        $user = $this->getUser();
+
         $admin = new EventUserRole();
         $admin->setRole("subscriber");
         $admin->setAdmin(true);
-        $admin->setUser($this->getUser());
+        $admin->setUser($user);
+
+        $user->addEvent($admin);
 
         $event->addUser($admin);
 
         $em->persist($event);
+        $em->persist($admin);
+        $em->persist($user);
         $em->flush();
 
         return $event;
@@ -263,7 +269,7 @@ class EventController extends Controller
         $userId         = $request->request->get('userId');
         $role           = $request->request->get('role');
 
-        if ($eventId == null || $role == null || !in_array($role, array('subscriber', 'guest', 'admin', 'maybe', 'declined')) {
+        if ($eventId == null || $role == null || !in_array($role, array('subscriber', 'guest', 'admin', 'maybe', 'declined'))) {
             $response = new Response();
             $response->setStatusCode(400);
             $response->setContent("Bad parameters. Paramaters : eventId role. Option : userId (if different from logged user).");
